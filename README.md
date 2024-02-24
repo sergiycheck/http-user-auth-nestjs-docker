@@ -1,4 +1,11 @@
-## Installation
+## How to run the app the app using docker-compose
+
+```bash
+docker compose up
+
+```
+
+## Instruction for running the app locally
 
 ```bash
 $ pnpm install

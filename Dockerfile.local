@@ -1,0 +1,20 @@
+FROM node:latest
+
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+
+WORKDIR /home/node/app
+
+COPY package.json .
+COPY pnpm-lock.yaml .
+
+RUN apt-get update && \
+  apt-get -y dist-upgrade && \
+  corepack enable && \
+  pnpm install
+
+COPY . .
+
+EXPOSE $PORT
+
+VOLUME [ "/home/node/app" ]

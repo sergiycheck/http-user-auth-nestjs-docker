@@ -1,0 +1,52 @@
+version: '3.9'
+
+services:
+  auth_api_back:
+    build:
+      context: .
+      dockerfile: Dockerfile.local
+    ports:
+      - 3203:3203
+    volumes:
+      - ./:/home/node/app
+    restart: always
+    environment:
+      POSTGRES_HOST: postgress_db
+      POSTGRES_PORT: 5432
+      PORT: 3203
+      POSTGRES_PASSWORD: db_pass
+      POSTGRES_USER: db_user
+      POSTGRES_DB: user_auth
+      POSTGRES_URL: postgres://db_user:db_pass@postgress_db:5432/user_auth
+
+      PRIVATE_JWT_KEY: private_key
+      JWT_EXPIRES_SECONDS: 3600
+    depends_on:
+      - postgress_db
+    command: bash -c "pnpm i && pnpm run start:dev"
+
+  postgress_db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: db_pass
+      POSTGRES_USER: db_user
+      POSTGRES_DB: user_auth
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - 5486:5432
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U db_user -d user_auth']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+volumes:
+  postgres_data:
