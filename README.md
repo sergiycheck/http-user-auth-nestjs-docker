@@ -1,4 +1,4 @@
-## How to run the app the app using docker-compose
+## How to run the app using docker compose
 
 ```bash
 docker compose up
