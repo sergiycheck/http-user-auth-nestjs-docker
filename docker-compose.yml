@@ -11,16 +11,12 @@ services:
       - ./:/home/node/app
     restart: always
     environment:
-      POSTGRES_HOST: postgress_db
-      POSTGRES_PORT: 5432
       PORT: 3203
-      POSTGRES_PASSWORD: db_pass
-      POSTGRES_USER: db_user
-      POSTGRES_DB: user_auth
-      POSTGRES_URL: postgres://db_user:db_pass@postgress_db:5432/user_auth
+      NODE_ENV: development
+      DB_CONNECTION_STRING: postgres://db_user:db_pass@postgress_db:5432/user_auth
 
-      PRIVATE_JWT_KEY: private_key
-      JWT_EXPIRES_SECONDS: 3600
+      JWT_SECRET: private_key
+      JWT_EXPIRES_IN: 1d
     depends_on:
       - postgress_db
     command: bash -c "pnpm i && pnpm run start:dev"

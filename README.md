@@ -1,7 +1,7 @@
 ## How to run the app using docker compose
 
 ```bash
-docker compose up
+pnpm i && docker compose up
 
 ```
 

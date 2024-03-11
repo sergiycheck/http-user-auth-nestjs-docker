@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { UserModel } from './models';
-import { UserResponse } from './dtos/responses';
+import { UserModel } from '../../models/user/user.model';
+import {
+  UserLoginResponse,
+  UserResponse,
+} from '../../dtos/user-dtos/responses.dto';
 
 @Injectable()
 export class UserMapper {
@@ -13,7 +16,7 @@ export class UserMapper {
     };
   }
 
-  toUserLoginResponse(user: UserModel, accessToken: string) {
+  toUserLoginResponse(user: UserModel, accessToken: string): UserLoginResponse {
     return {
       user: {
         id: user.id,

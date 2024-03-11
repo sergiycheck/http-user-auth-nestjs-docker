@@ -19,6 +19,8 @@ export const usersRelations = relations(users, ({ one }) => ({
 
 export const authInfo = pgTable('auth_info', {
   id: serial('id').primaryKey(),
-  userId: integer('user_id').references(() => users.id),
+  userId: integer('user_id').references(() => users.id, {
+    onDelete: 'cascade',
+  }),
   hashedAccessToken: text('hashed_access_token'),
 });

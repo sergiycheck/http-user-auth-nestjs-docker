@@ -1,9 +1,9 @@
 @host = http://localhost:3203
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGRvbWFpbi5jb20iLCJpYXQiOjE3MDg4MDI1NTEsImV4cCI6MTcwODgwNjE1MX0.W2brgINPz4XYim9E4GikvKZ9JbQNXFf0vx2au2oAYh8
+@token =
 
 
 ### sign in user
-POST {{host}}/auth/sign-in
+POST {{host}}/users/sign-in
 Content-Type: application/json
 
 {
@@ -12,7 +12,7 @@ Content-Type: application/json
 }
 
 ### sign up user
-POST {{host}}/auth/sign-up
+POST {{host}}/users/sign-up
 Content-Type: application/json
 
 {
@@ -23,12 +23,12 @@ Content-Type: application/json
 
 
 ### sing out user
-POST {{host}}/auth/sign-out
+POST {{host}}/users/sign-out
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "id": 1
+  "id": 2
 }
 
 ### get user
@@ -47,3 +47,13 @@ Authorization: Bearer {{token}}
 ### get user by email with bad token
 GET {{host}}/users?email=user1@domain
 Authorization: Bearer malformed_token
+
+
+### delete user by id
+POST {{host}}/users/remove
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "id": 2
+}

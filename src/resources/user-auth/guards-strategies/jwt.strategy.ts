@@ -3,9 +3,9 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ConfigService } from '@nestjs/config';
 import { Payload, Strategies } from './types';
-import { UsersService } from 'src/resources/users/users.service';
-import { UserResponse } from 'src/resources/users/dtos/responses';
-import { AuthService } from '../auth.service';
+import { UsersService } from 'src/resources/user-auth/services/user/users.service';
+import { UserResponse } from 'src/resources/user-auth/dtos/user-dtos/responses.dto';
+import { AuthService } from '../services/auth/auth.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, Strategies.JWT) {
@@ -17,7 +17,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, Strategies.JWT) {
     const configObj: StrategyOptions = {
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: configService.get<string>('PRIVATE_JWT_KEY'),
+      secretOrKey: configService.get<string>('JWT_SECRET'),
       passReqToCallback: true,
     };
     super(configObj);
@@ -27,9 +27,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, Strategies.JWT) {
     if (!payload || !payload.email)
       throw new BadRequestException(`Jwt token validation failed!`);
 
-    const user = await this.usersService.findUser({
-      email: payload.email,
-    });
+    const user = await this.usersService.findUser({ email: payload.email });
 
     if (!user) {
       throw new BadRequestException(
