@@ -1,5 +1,5 @@
 @host = http://localhost:3203
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGRvbWFpbi5jb20iLCJpYXQiOjE3MTAxNzgxNzcsImV4cCI6MTcxMDI2NDU3N30.L8B3G9mytz9iAsZ37RuNHxbMC-WT4NNvVE-ddLsmUyA
+@token =
 
 
 ### sign in user
