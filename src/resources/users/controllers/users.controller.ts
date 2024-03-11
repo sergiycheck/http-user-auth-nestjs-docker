@@ -1,7 +1,7 @@
-import { CacheRequestGetInterceptor } from '../common/cache.interceptor';
-import { GetUserQuery } from './dtos/get-user.query';
-import { HttpUserExceptionFilter } from './filters/http-user-exceptions.filter';
-import { UsersService } from './users.service';
+import { CacheRequestGetInterceptor } from '../../common/cache.interceptor';
+import { GetUserQuery } from '../dtos/get-user.query';
+import { HttpUserExceptionFilter } from '../filters/http-user-exceptions.filter';
+import { UsersService } from '../services/users.service';
 import {
   Controller,
   Get,

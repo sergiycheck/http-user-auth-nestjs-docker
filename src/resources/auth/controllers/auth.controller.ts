@@ -1,10 +1,10 @@
 import { Body, Controller, Post, UseFilters } from '@nestjs/common';
-import { Public } from './metadata.decorators';
-import { RegisterUserDto } from '../users/dtos/register.dto';
-import { UsersService } from '../users/users.service';
-import { LoginUserDto } from '../users/dtos/login.dto';
-import { HttpUserExceptionFilter } from '../users/filters/http-user-exceptions.filter';
-import { LogoutUserDto } from '../users/dtos/logout-user.dto';
+import { Public } from '../utils/metadata.decorators';
+import { RegisterUserDto } from '../../users/dtos/register.dto';
+import { UsersService } from '../../users/services/users.service';
+import { LoginUserDto } from '../../users/dtos/login.dto';
+import { HttpUserExceptionFilter } from '../../users/filters/http-user-exceptions.filter';
+import { LogoutUserDto } from '../../users/dtos/logout-user.dto';
 
 @Controller('auth')
 @UseFilters(HttpUserExceptionFilter)

@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { hash } from 'argon2';
-import { Payload } from './guards-strategies/types';
-import { CreateAuthInfo } from './dtos';
+import { Payload } from '../guards-strategies/types';
+import { CreateAuthInfo } from '../dtos/dtos';
 import { eq } from 'drizzle-orm';
 import { authInfo } from 'src/infra/drizzle/schema';
 import { ConnectionService } from 'src/infra/drizzle/connection.service';
+import { AuthInfoModel } from '../models/auth-info.model';
 
 @Injectable()
 export class AuthService {
@@ -32,33 +33,31 @@ export class AuthService {
     const hashedAccessToken = await hash(dto.accessToken);
 
     const authInfoExists = await this.findAuthInfoByUserId(dto.userId);
-    let res:
-      | {
-          id: number;
-          userId: number;
-          hashedAccessToken: string;
-        }[]
-      | undefined;
+    let authInfoModel: AuthInfoModel | null;
 
     if (!authInfoExists) {
-      res = await db
+      const result = await db
         .insert(authInfo)
         .values({
           userId: dto.userId,
           hashedAccessToken,
         })
         .returning();
+
+      authInfoModel = result.length ? result[0] : null;
     } else {
-      res = await db
+      const result = await db
         .update(authInfo)
         .set({
           hashedAccessToken,
         })
         .where(eq(authInfo.userId, dto.userId))
         .returning();
+
+      authInfoModel = result.length ? result[0] : null;
     }
 
-    return res;
+    return authInfoModel;
   }
 
   async removeAuthInfo({ userId }: { userId: number }) {

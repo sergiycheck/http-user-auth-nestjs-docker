@@ -1,4 +1,4 @@
-import { UserModel } from '../models';
+import { UserModel } from '../models/user.model';
 
 export type UserResponse = Omit<
   UserModel,

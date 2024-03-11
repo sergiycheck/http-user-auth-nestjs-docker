@@ -2,16 +2,17 @@ import { UserMapper } from './user.mapper';
 import { Injectable } from '@nestjs/common';
 import { hash, verify } from 'argon2';
 import { ConnectionService } from 'src/infra/drizzle/connection.service';
-import { AuthService } from '../auth/auth.service';
-import { GetUserQuery } from './dtos/get-user.query';
-import { RegisterUserDto } from './dtos/register.dto';
+import { AuthService } from '../../auth/services/auth.service';
+import { GetUserQuery } from '../dtos/get-user.query';
+import { RegisterUserDto } from '../dtos/register.dto';
 import { users } from 'src/infra/drizzle/schema';
-import { LoginUserDto } from './dtos/login.dto';
+import { LoginUserDto } from '../dtos/login.dto';
 import {
   SignInBadRequestException,
   UserBadRequestException,
   UserNotFoundException,
-} from './exceptions/user-custom-exceptions';
+} from '../exceptions/user-custom-exceptions';
+import { UserModel } from '../models/user.model';
 
 @Injectable()
 export class UsersService {
@@ -38,7 +39,7 @@ export class UsersService {
   }
 
   async findUser(userInput: GetUserQuery) {
-    let user;
+    let user: UserModel;
 
     if (userInput?.id) {
       user = await this.findUserById(userInput.id);
