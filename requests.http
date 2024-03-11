@@ -1,5 +1,5 @@
 @host = http://localhost:3203
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGRvbWFpbi5jb20iLCJpYXQiOjE3MTAxNzQ0NzQsImV4cCI6MTcxMDE3ODA3NH0.qkFyY1YZa40I8K7u2ye_o0f179K5zWEzk_j-MILWebI
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGRvbWFpbi5jb20iLCJpYXQiOjE3MTAxNzgxNzcsImV4cCI6MTcxMDI2NDU3N30.L8B3G9mytz9iAsZ37RuNHxbMC-WT4NNvVE-ddLsmUyA
 
 
 ### sign in user
@@ -28,7 +28,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "id": 1
+  "id": 2
 }
 
 ### get user
@@ -55,5 +55,5 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "id": 1
+  "id": 2
 }
