@@ -9,7 +9,9 @@ export class MigrationService {
   constructor(private configService: ConfigService) {}
 
   async migrate() {
-    const connectionString = this.configService.get<string>('POSTGRES_URL');
+    const connectionString = this.configService.get<string>(
+      'DB_CONNECTION_STRING',
+    );
     const sql = postgres(connectionString, { max: 1 });
     const db = drizzle(sql);
 
