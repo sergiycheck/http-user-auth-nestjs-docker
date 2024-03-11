@@ -4,23 +4,8 @@ import {
   ExecutionContext,
   CallHandler,
 } from '@nestjs/common';
-import { LRUCache } from 'lru-cache';
 import { Observable, map, of } from 'rxjs';
-
-// for the sake of the example, we are using a simple in-memory cache
-// to demonstrate the concept of using interceptors to cache responses
-
-const options = {
-  max: 500,
-  ttl: 1000 * 60 * 5,
-
-  allowStale: false,
-
-  updateAgeOnGet: false,
-  updateAgeOnHas: false,
-};
-
-const cache = new LRUCache(options);
+import { LRUCacheInstance } from 'src/infra/cache/lru.cache';
 
 @Injectable()
 export class CacheRequestGetInterceptor implements NestInterceptor {
@@ -29,14 +14,14 @@ export class CacheRequestGetInterceptor implements NestInterceptor {
     const request = http.getRequest();
     const key = request.url;
 
-    const isCached = cache.has(key);
+    const isCached = LRUCacheInstance.has(key);
     if (isCached) {
-      const value = cache.get(key);
+      const value = LRUCacheInstance.get(key);
       return of(value);
     }
     return next.handle().pipe(
       map((response) => {
-        cache.set(key, response);
+        LRUCacheInstance.set(key, response);
         return response;
       }),
     );

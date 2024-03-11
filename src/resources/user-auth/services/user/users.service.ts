@@ -4,6 +4,9 @@ import { ConnectionService } from 'src/infra/drizzle/connection.service';
 import { GetUserQuery } from '../../dtos/user-dtos/get-user.dto';
 import { UserNotFoundException } from '../../exceptions/user-custom-exceptions';
 import { UserModel } from '../../models/user/user.model';
+import { users } from 'src/infra/drizzle/schema';
+import { eq } from 'drizzle-orm';
+import { LRUCacheInstance } from 'src/infra/cache/lru.cache';
 
 @Injectable()
 export class UsersService {
@@ -42,5 +45,25 @@ export class UsersService {
     }
 
     return this.userMapper.toUserResponse(user);
+  }
+
+  async deleteUserById(id: number) {
+    const db = this.connectionService.db;
+
+    const resultArr = await db
+      .delete(users)
+      .where(eq(users.id, id))
+      .returning();
+
+    if (!resultArr.length) {
+      throw new UserNotFoundException(`User not found`);
+    } else {
+      const deletedUser = resultArr[0];
+
+      LRUCacheInstance.delete(`/users?id=${id}`);
+      LRUCacheInstance.delete(`/users?email=${deletedUser.email}`);
+    }
+
+    return { message: 'User deleted' };
   }
 }

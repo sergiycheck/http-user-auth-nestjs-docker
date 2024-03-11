@@ -21,6 +21,7 @@ async function bootstrap() {
   app.enableCors();
 
   const migrationService = app.get(MigrationService);
+
   await migrationService.migrate();
 
   const config = new DocumentBuilder()

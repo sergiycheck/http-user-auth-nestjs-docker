@@ -1,6 +1,6 @@
 import {
   UserLoginResponse,
-  UserLogoutResponse,
+  UserMessageResponse,
   UserResponse,
 } from '../dtos/user-dtos/responses.dto';
 import {
@@ -19,7 +19,7 @@ import { LoginUserDto } from '../dtos/user-dtos/login.dto';
 import { HttpUserExceptionFilter } from '../filters/http-user-exceptions.filter';
 import { LogoutUserDto } from '../dtos/user-dtos/logout-user.dto';
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { CacheRequestGetInterceptor } from 'src/resources/common/cache.interceptor';
+import { CacheRequestGetInterceptor } from 'src/resources/common/interceptors/cache.interceptor';
 import { GetUserQuery } from 'src/resources/user-auth/dtos/user-dtos/get-user.dto';
 import { AuthService } from '../services/auth/auth.service';
 
@@ -53,21 +53,29 @@ export class UsersController {
   @ApiBearerAuth()
   @Post('sign-out')
   @ApiOkResponse({
-    type: UserLogoutResponse,
+    type: UserMessageResponse,
   })
   async logoutUser(@Body() dto: LogoutUserDto) {
     return this.authService.removeAuthInfo({ userId: dto.id });
   }
 
-  @Get('')
+  @Get()
   @ApiBearerAuth()
   @UseInterceptors(CacheRequestGetInterceptor)
   @ApiOkResponse({
     type: UserResponse,
   })
-  async getUser(@Query('id') id, @Query('email') email: string) {
+  async getUser(@Query('id') id?: number, @Query('email') email?: string) {
     const dto = { id, email } as GetUserQuery;
-
     return this.usersService.findUser(dto);
+  }
+
+  @ApiBearerAuth()
+  @Post('remove')
+  @ApiOkResponse({
+    type: UserMessageResponse,
+  })
+  async removeUser(@Body() dto: LogoutUserDto) {
+    return this.usersService.deleteUserById(dto.id);
   }
 }

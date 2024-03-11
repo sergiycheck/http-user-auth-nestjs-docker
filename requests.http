@@ -1,5 +1,5 @@
 @host = http://localhost:3203
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGRvbWFpbi5jb20iLCJpYXQiOjE3MTAxNzA1NTEsImV4cCI6MTcxMDE3NDE1MX0.rUa3xwDnoOgRPuj3t3l9t5x-CoA3ujjwHWiHoAitMSk
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGRvbWFpbi5jb20iLCJpYXQiOjE3MTAxNzQ0NzQsImV4cCI6MTcxMDE3ODA3NH0.qkFyY1YZa40I8K7u2ye_o0f179K5zWEzk_j-MILWebI
 
 
 ### sign in user
@@ -47,3 +47,13 @@ Authorization: Bearer {{token}}
 ### get user by email with bad token
 GET {{host}}/users?email=user1@domain
 Authorization: Bearer malformed_token
+
+
+### delete user by id
+POST {{host}}/users/remove
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "id": 1
+}

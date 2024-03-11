@@ -15,6 +15,6 @@ export class UserLoginResponse {
   authInfo: { accessToken: string };
 }
 
-export class UserLogoutResponse {
+export class UserMessageResponse {
   message: string;
 }

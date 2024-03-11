@@ -7,7 +7,6 @@ import { authInfo, users } from 'src/infra/drizzle/schema';
 import { ConnectionService } from 'src/infra/drizzle/connection.service';
 import { AuthInfoModel } from '../../models/auth/auth-info.model';
 import { UserMapper } from '../user/user.mapper';
-import { UsersService } from '../user/users.service';
 import { RegisterUserDto } from '../../dtos/user-dtos/register.dto';
 import {
   SignInBadRequestException,
@@ -23,7 +22,6 @@ export class AuthService {
     private jwtService: JwtService,
     private connectionService: ConnectionService,
     private readonly userMapper: UserMapper,
-    private readonly usersService: UsersService,
   ) {}
 
   getSignedAccessToken(payload: Payload) {
@@ -86,8 +84,8 @@ export class AuthService {
       throw new UserBadRequestException(`Passwords do not match`);
     }
 
-    const userExists = await this.usersService.findUser({
-      email: userInput.email,
+    const userExists = await db.query.users.findFirst({
+      where: (user, { eq }) => eq(user.email, userInput.email),
     });
     if (userExists) {
       throw new UserBadRequestException(
