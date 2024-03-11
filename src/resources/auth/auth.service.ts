@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
 import { hash } from 'argon2';
 import { Payload } from './guards-strategies/types';
 import { CreateAuthInfo } from './dtos';
@@ -12,7 +11,6 @@ import { ConnectionService } from 'src/infra/drizzle/connection.service';
 export class AuthService {
   constructor(
     private jwtService: JwtService,
-    private configService: ConfigService,
     private connectionService: ConnectionService,
   ) {}
 
