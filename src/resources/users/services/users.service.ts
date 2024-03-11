@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { hash, verify } from 'argon2';
 import { ConnectionService } from 'src/infra/drizzle/connection.service';
 import { AuthService } from '../../auth/services/auth.service';
-import { GetUserQuery } from '../dtos/get-user.query';
+import { GetUserQuery } from '../dtos/get-user.dto';
 import { RegisterUserDto } from '../dtos/register.dto';
 import { users } from 'src/infra/drizzle/schema';
 import { LoginUserDto } from '../dtos/login.dto';

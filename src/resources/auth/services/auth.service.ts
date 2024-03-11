@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { hash } from 'argon2';
 import { Payload } from '../guards-strategies/types';
-import { CreateAuthInfo } from '../dtos/dtos';
+import { CreateAuthInfo } from '../dtos/create-auth-info.dto';
 import { eq } from 'drizzle-orm';
 import { authInfo } from 'src/infra/drizzle/schema';
 import { ConnectionService } from 'src/infra/drizzle/connection.service';

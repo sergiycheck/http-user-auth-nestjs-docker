@@ -4,7 +4,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ConfigService } from '@nestjs/config';
 import { Payload, Strategies } from './types';
 import { UsersService } from 'src/resources/users/services/users.service';
-import { UserResponse } from 'src/resources/users/dtos/responses';
+import { UserResponse } from 'src/resources/users/dtos/responses.dto';
 import { AuthService } from '../services/auth.service';
 
 @Injectable()
