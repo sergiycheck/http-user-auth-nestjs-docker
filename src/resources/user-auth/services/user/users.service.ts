@@ -7,6 +7,10 @@ import { UserModel } from '../../models/user/user.model';
 import { users } from 'src/infra/drizzle/schema';
 import { eq } from 'drizzle-orm';
 import { LRUCacheInstance } from 'src/infra/cache/lru.cache';
+import {
+  UserMessageResponse,
+  UserResponse,
+} from '../../dtos/user-dtos/responses.dto';
 
 @Injectable()
 export class UsersService {
@@ -15,7 +19,7 @@ export class UsersService {
     private readonly userMapper: UserMapper,
   ) {}
 
-  findUserById(id: number) {
+  findUserById(id: number): Promise<UserModel | null> {
     const db = this.connectionService.db;
 
     return db.query.users.findFirst({
@@ -23,7 +27,7 @@ export class UsersService {
     });
   }
 
-  findUserByEmail(email: string) {
+  findUserByEmail(email: string): Promise<UserModel | null> {
     const db = this.connectionService.db;
 
     return db.query.users.findFirst({
@@ -31,7 +35,7 @@ export class UsersService {
     });
   }
 
-  async findUser(userInput: GetUserQuery) {
+  async findUser(userInput: GetUserQuery): Promise<UserResponse> {
     let user: UserModel;
 
     if (userInput?.id) {
@@ -47,7 +51,7 @@ export class UsersService {
     return this.userMapper.toUserResponse(user);
   }
 
-  async deleteUserById(id: number) {
+  async deleteUserById(id: number): Promise<UserMessageResponse> {
     const db = this.connectionService.db;
 
     const resultArr = await db

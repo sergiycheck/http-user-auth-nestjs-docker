@@ -15,6 +15,10 @@ import {
 } from '../../exceptions/user-custom-exceptions';
 import { LoginUserDto } from '../../dtos/user-dtos/login.dto';
 import { hash, verify } from 'argon2';
+import {
+  UserLoginResponse,
+  UserMessageResponse,
+} from '../../dtos/user-dtos/responses.dto';
 
 @Injectable()
 export class AuthService {
@@ -24,11 +28,11 @@ export class AuthService {
     private readonly userMapper: UserMapper,
   ) {}
 
-  getSignedAccessToken(payload: Payload) {
+  getSignedAccessToken(payload: Payload): string {
     return this.jwtService.sign(payload);
   }
 
-  findAuthInfoByUserId(userId: number) {
+  findAuthInfoByUserId(userId: number): Promise<AuthInfoModel | null> {
     const db = this.connectionService.db;
 
     return db.query.authInfo.findFirst({
@@ -36,7 +40,7 @@ export class AuthService {
     });
   }
 
-  async createAuthInfo(dto: CreateAuthInfo) {
+  async createAuthInfo(dto: CreateAuthInfo): Promise<AuthInfoModel | null> {
     const db = this.connectionService.db;
 
     const hashedAccessToken = await hash(dto.accessToken);
@@ -69,7 +73,7 @@ export class AuthService {
     return authInfoModel;
   }
 
-  async removeAuthInfo({ userId }: { userId: number }) {
+  async removeAuthInfo(userId: number): Promise<UserMessageResponse> {
     const db = this.connectionService.db;
 
     await db.delete(authInfo).where(eq(authInfo.userId, userId));
@@ -77,7 +81,7 @@ export class AuthService {
     return { message: 'User was signed out!' };
   }
 
-  async registerUser(userInput: RegisterUserDto) {
+  async registerUser(userInput: RegisterUserDto): Promise<UserLoginResponse> {
     const db = this.connectionService.db;
 
     if (userInput.password !== userInput.repeatPassword) {
@@ -117,7 +121,7 @@ export class AuthService {
     return this.userMapper.toUserLoginResponse(user, accessToken);
   }
 
-  async loginUser(userInput: LoginUserDto) {
+  async loginUser(userInput: LoginUserDto): Promise<UserLoginResponse> {
     const db = this.connectionService.db;
 
     const user = await db.query.users.findFirst({

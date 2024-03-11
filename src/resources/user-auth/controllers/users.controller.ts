@@ -37,7 +37,9 @@ export class UsersController {
   @ApiOkResponse({
     type: UserLoginResponse,
   })
-  async registerUser(@Body() input: RegisterUserDto) {
+  async registerUser(
+    @Body() input: RegisterUserDto,
+  ): Promise<UserLoginResponse> {
     return this.authService.registerUser(input);
   }
 
@@ -46,7 +48,7 @@ export class UsersController {
   @ApiOkResponse({
     type: UserLoginResponse,
   })
-  async loginUser(@Body() input: LoginUserDto) {
+  async loginUser(@Body() input: LoginUserDto): Promise<UserLoginResponse> {
     return this.authService.loginUser(input);
   }
 
@@ -55,8 +57,8 @@ export class UsersController {
   @ApiOkResponse({
     type: UserMessageResponse,
   })
-  async logoutUser(@Body() dto: LogoutUserDto) {
-    return this.authService.removeAuthInfo({ userId: dto.id });
+  async logoutUser(@Body() dto: LogoutUserDto): Promise<UserMessageResponse> {
+    return this.authService.removeAuthInfo(dto.id);
   }
 
   @Get()
@@ -65,7 +67,10 @@ export class UsersController {
   @ApiOkResponse({
     type: UserResponse,
   })
-  async getUser(@Query('id') id?: number, @Query('email') email?: string) {
+  async getUser(
+    @Query('id') id?: number,
+    @Query('email') email?: string,
+  ): Promise<UserResponse> {
     const dto = { id, email } as GetUserQuery;
     return this.usersService.findUser(dto);
   }
@@ -75,7 +80,7 @@ export class UsersController {
   @ApiOkResponse({
     type: UserMessageResponse,
   })
-  async removeUser(@Body() dto: LogoutUserDto) {
+  async removeUser(@Body() dto: LogoutUserDto): Promise<UserMessageResponse> {
     return this.usersService.deleteUserById(dto.id);
   }
 }
