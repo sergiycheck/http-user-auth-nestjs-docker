@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
-import { AuthModule } from './resources/auth/auth.module';
+import { UsersAuthModule } from './resources/user-auth/user-auth.module';
 import { DrizzleModule } from './infra/drizzle/drizzle.module';
-import { UsersModule } from './resources/users/users.module';
 import { ConfigModule } from '@nestjs/config';
 import Joi from 'joi';
 
@@ -31,9 +30,8 @@ import Joi from 'joi';
       }),
     }),
 
-    AuthModule,
     DrizzleModule,
-    UsersModule,
+    UsersAuthModule,
   ],
   controllers: [],
   providers: [],

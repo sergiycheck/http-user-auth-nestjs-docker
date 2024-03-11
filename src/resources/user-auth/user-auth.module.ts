@@ -1,22 +1,19 @@
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { Global, Module, forwardRef } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-
 import { JwtAuthGuard } from './guards-strategies/jwt-auth.guard';
-
-import { AuthService } from './services/auth.service';
-
+import { AuthService } from './services/auth/auth.service';
 import { JwtStrategy } from './guards-strategies/jwt.strategy';
-import { UsersModule } from '../users/users.module';
 import { DrizzleModule } from 'src/infra/drizzle/drizzle.module';
-import { AuthController } from './controllers/auth.controller';
+import { UsersController } from './controllers/users.controller';
+import { UserMapper } from './services/user/user.mapper';
+import { UsersService } from './services/user/users.service';
 
 @Global()
 @Module({
   imports: [
-    forwardRef(() => UsersModule),
     DrizzleModule,
     PassportModule,
     ConfigModule,
@@ -32,6 +29,8 @@ import { AuthController } from './controllers/auth.controller';
     }),
   ],
   providers: [
+    UserMapper,
+    UsersService,
     AuthService,
     JwtStrategy,
     // provide JWT guard globally
@@ -40,6 +39,6 @@ import { AuthController } from './controllers/auth.controller';
   ],
 
   exports: [AuthService, JwtModule],
-  controllers: [AuthController],
+  controllers: [UsersController],
 })
-export class AuthModule {}
+export class UsersAuthModule {}
